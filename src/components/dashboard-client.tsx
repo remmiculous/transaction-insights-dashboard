@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { useTransactionsInfinite } from "@/hooks/useTransactionsInfinite";
 
 export default function DashboardClient() {
-  const { data, fetchNextPage, hasNextPage, isLoading } =
+  const { data, fetchNextPage, hasNextPage, isLoading, error } =
     useTransactionsInfinite({});
 
   if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   const transactions = data?.pages.flat() ?? [];
 

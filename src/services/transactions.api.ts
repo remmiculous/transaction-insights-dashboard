@@ -1,6 +1,5 @@
+import { apiClient } from "@/lib/axios";
 import type { Transaction } from "@/types/transaction";
-
-const BASE_URL = "https://696e0139d7bacd2dd7155c6a.mockapi.io/barter-tech";
 
 interface FetchParams {
   pageParam?: number;
@@ -23,13 +22,7 @@ export const fetchTransactions = async ({
   if (search) params.append("search", search);
   if (category) params.append("category", category);
 
-  const res = await fetch(`${BASE_URL}/transactions?${params.toString()}`, {
-    cache: "no-store",
-  });
+  const res = await apiClient.get("/transactions", { params });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch transactions");
-  }
-
-  return res.json();
+  return res.data;
 };
