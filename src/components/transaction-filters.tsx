@@ -43,8 +43,8 @@ export function TransactionFiltersComponent({
     currentFilters.category,
   );
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(() => {
-    if (currentFilters.createdAt) {
-      return new Date(currentFilters.createdAt);
+    if (currentFilters.createdAt_gte) {
+      return new Date(currentFilters.createdAt_gte);
     }
     return undefined;
   });
@@ -69,10 +69,24 @@ export function TransactionFiltersComponent({
 
   const handleDateChange = (date: Date | undefined) => {
     setSelectedDate(date);
-    onFiltersChange({
-      ...currentFilters,
-      createdAt: date ? date.toISOString() : undefined,
-    });
+    if (date) {
+      const gte = new Date(date);
+      gte.setHours(0, 0, 0, 0);
+      const lte = new Date(date);
+      lte.setHours(23, 59, 59, 999);
+
+      onFiltersChange({
+        ...currentFilters,
+        createdAt_gte: gte.toISOString(),
+        createdAt_lte: lte.toISOString(),
+      });
+    } else {
+      onFiltersChange({
+        ...currentFilters,
+        createdAt_gte: undefined,
+        createdAt_lte: undefined,
+      });
+    }
   };
 
   const handleClearFilters = () => {
