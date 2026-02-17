@@ -1,12 +1,17 @@
 "use client";
 
 import { TransactionList } from "@/components/transaction-list";
-import { Button } from "@/components/ui/button";
 import { useTransactionsInfinite } from "@/hooks/useTransactionsInfinite";
 
 export default function DashboardClient() {
-  const { data, fetchNextPage, hasNextPage, isLoading, error } =
-    useTransactionsInfinite({});
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    error,
+  } = useTransactionsInfinite({});
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -15,10 +20,15 @@ export default function DashboardClient() {
 
   return (
     <div className="px-4 pt-10">
-      <TransactionList list={transactions} />
+      <TransactionList
+        list={transactions}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+      />
 
-      {hasNextPage && (
-        <Button onClick={() => fetchNextPage()}>Load more</Button>
+      {isFetchingNextPage && (
+        <div className="py-4 text-center">Loading more...</div>
       )}
     </div>
   );

@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import {
   Table,
@@ -8,8 +10,28 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Transaction } from "@/types/transaction";
+import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 
-export function TransactionList({ list }: { list: Transaction[] }) {
+interface TransactionListProps {
+  list: Transaction[];
+  fetchNextPage?: () => void;
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
+}
+
+export function TransactionList({
+  list,
+  fetchNextPage,
+  hasNextPage = false,
+  isFetchingNextPage = false,
+}: TransactionListProps) {
+  useInfiniteScroll({
+    threshold: 90,
+    onLoadMore: () => fetchNextPage?.(),
+    hasMore: hasNextPage,
+    isLoading: isFetchingNextPage,
+  });
+
   return (
     <Table className="rounded-2xl border">
       <TableHeader>
@@ -62,21 +84,15 @@ export function TransactionList({ list }: { list: Transaction[] }) {
               )}
             </TableCell>
             <TableCell className="text-right">
-              {new Date(item.createdAt).toLocaleDateString(undefined, {
-                year: "numeric",
-                month: "short",
+              {new Date(item.createdAt).toLocaleDateString("en-GB", {
                 day: "numeric",
+                month: "short",
+                year: "numeric",
               })}
             </TableCell>
           </TableRow>
         ))}
       </TableBody>
-      {/* <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter> */}
     </Table>
   );
 }
