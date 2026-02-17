@@ -3,4 +3,5 @@ export interface TransactionFilters {
   category?: string;
   createdAt_gte?: string;
   createdAt_lte?: string;
+  search?: string;
 }

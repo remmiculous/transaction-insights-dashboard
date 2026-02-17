@@ -2,9 +2,10 @@
 
 import { format } from "date-fns";
 import { CalendarIcon, FilterIcon, XIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
@@ -17,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useDebounce } from "@/hooks/useDebounce";
 import type { TransactionFilters } from "@/types/transaction-filters";
 
 interface TransactionFiltersProps {
@@ -48,6 +50,35 @@ export function TransactionFiltersComponent({
     }
     return undefined;
   });
+  const [searchQuery, setSearchQuery] = useState(currentFilters.search || "");
+
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
+
+  // Keep refs of props to avoid dependency loop issues in the search effect
+  const filtersRef = useRef(currentFilters);
+  const onFiltersChangeRef = useRef(onFiltersChange);
+
+  useEffect(() => {
+    filtersRef.current = currentFilters;
+    onFiltersChangeRef.current = onFiltersChange;
+  }, [currentFilters, onFiltersChange]);
+
+  // Sync searchQuery when currentFilters.search changes from outside (e.g. Clear Filters)
+  useEffect(() => {
+    setSearchQuery(currentFilters.search || "");
+  }, [currentFilters.search]);
+
+  useEffect(() => {
+    const currentSearch = filtersRef.current.search || "";
+    const newSearch = debouncedSearchQuery || "";
+
+    if (currentSearch !== newSearch) {
+      onFiltersChangeRef.current({
+        ...filtersRef.current,
+        search: newSearch || undefined,
+      });
+    }
+  }, [debouncedSearchQuery]);
 
   const handleStatusChange = (status: string) => {
     const newStatus = status === "all" ? undefined : status;
@@ -93,16 +124,28 @@ export function TransactionFiltersComponent({
     setSelectedStatus(undefined);
     setSelectedCategory(undefined);
     setSelectedDate(undefined);
+    setSearchQuery("");
     onFiltersChange({});
   };
 
-  const hasActiveFilters = selectedStatus || selectedCategory || selectedDate;
+  const hasActiveFilters =
+    selectedStatus || selectedCategory || selectedDate || searchQuery;
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <div className="flex items-center gap-2">
+      <div className="flex w-full items-center gap-2 sm:w-auto">
         <FilterIcon className="h-4 w-4 text-muted-foreground" />
         <span className="font-medium text-sm">Filters:</span>
+      </div>
+
+      {/* Search Input */}
+      <div className="w-full sm:w-64">
+        <Input
+          placeholder="Search username or ID..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="h-9"
+        />
       </div>
 
       {/* Status Select */}
