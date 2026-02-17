@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { TransactionList } from "@/components/transaction-list";
 import { TransactionFiltersComponent } from "@/components/transaction-filters";
-import { Spinner } from "@/components/ui/spinner";
+import { TransactionList } from "@/components/transaction-list";
 import { useTransactionsInfinite } from "@/hooks/useTransactionsInfinite";
 import type { TransactionFilters } from "@/types/transaction-filters";
 

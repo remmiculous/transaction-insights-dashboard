@@ -1,14 +1,16 @@
 "use client";
 
+import { format } from "date-fns";
+import { CalendarIcon, FilterIcon, XIcon } from "lucide-react";
 import { useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
+import type { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
 import {
   Select,
   SelectContent,
@@ -16,11 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-import { CalendarIcon, FilterIcon, XIcon } from "lucide-react";
-import { format } from "date-fns";
 import type { TransactionFilters } from "@/types/transaction-filters";
-import type { DateRange } from "react-day-picker";
 
 interface TransactionFiltersProps {
   onFiltersChange: (filters: TransactionFilters) => void;
