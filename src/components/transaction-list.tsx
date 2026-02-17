@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -37,7 +39,9 @@ export function TransactionList({
       <TableHeader>
         <TableRow>
           <TableHead className="text-left font-bold text-md">ID</TableHead>
-          <TableHead className="text-left font-bold text-md">User</TableHead>
+          <TableHead className="w-3xs text-left font-bold text-md">
+            User
+          </TableHead>
           <TableHead className="text-center font-bold text-md">
             Amount
           </TableHead>
@@ -92,7 +96,39 @@ export function TransactionList({
             </TableCell>
           </TableRow>
         ))}
+        {isFetchingNextPage
+          ? Array.from({ length: 10 }).map((_) => (
+              <TableRow key={crypto.randomUUID()}>
+                <TableCell className="font-medium">
+                  <Skeleton className="h-4 w-5" />
+                </TableCell>
+                <TableCell className="flex items-center justify-start gap-4 overflow-hidden">
+                  <Skeleton className="h-10 w-10 rounded" />
+                  <Skeleton className="h-4 w-full rounded" />
+                </TableCell>
+                <TableCell className="">
+                  <Skeleton className="m-auto h-4 w-10 rounded" />
+                </TableCell>
+                <TableCell className="">
+                  <Skeleton className="m-auto h-4 w-10 rounded" />
+                </TableCell>
+                <TableCell className="">
+                  <Skeleton className="m-auto h-4 w-10 rounded" />
+                </TableCell>
+                <TableCell className="">
+                  <Skeleton className="m-auto h-4 w-10 rounded" />
+                </TableCell>
+              </TableRow>
+            ))
+          : null}
       </TableBody>
+      <TableFooter>
+        <TableRow>
+          <TableCell colSpan={6} className="text-center">
+            No More Results
+          </TableCell>
+        </TableRow>
+      </TableFooter>
     </Table>
   );
 }
