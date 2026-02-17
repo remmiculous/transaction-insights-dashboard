@@ -1,11 +1,15 @@
 "use client";
 
 import { format } from "date-fns";
-import { CalendarIcon, FilterIcon, XIcon } from "lucide-react";
+import { CalendarIcon, FilterIcon, SearchIcon, XIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import {
   Popover,
   PopoverContent,
@@ -132,96 +136,107 @@ export function TransactionFiltersComponent({
     selectedStatus || selectedCategory || selectedDate || searchQuery;
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <div className="flex w-full items-center gap-2 sm:w-auto">
-        <FilterIcon className="h-4 w-4 text-muted-foreground" />
-        <span className="font-medium text-sm">Filters:</span>
+    <div className="flex w-full flex-wrap items-center gap-3">
+      <div className="flex w-full items-center gap-2">
+        <FilterIcon className="h-4 w-4" />
+        <span className="font-bold text-lg">Filters</span>
       </div>
-
-      {/* Search Input */}
-      <div className="w-full sm:w-64">
-        <Input
-          placeholder="Search username or ID..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="h-9"
-        />
-      </div>
-
-      {/* Status Select */}
-      <Select
-        value={selectedStatus || "all"}
-        onValueChange={handleStatusChange}
-      >
-        <SelectTrigger className="h-9 w-[120px]">
-          <SelectValue placeholder="Status" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All Status</SelectItem>
-          {STATUS_OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      {/* Category Select */}
-      <Select
-        value={selectedCategory || "all"}
-        onValueChange={handleCategoryChange}
-      >
-        <SelectTrigger className="h-9 w-[140px]">
-          <SelectValue placeholder="Category" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All Categories</SelectItem>
-          {CATEGORY_OPTIONS.map((category) => (
-            <SelectItem key={category} value={category} className="capitalize">
-              {category}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      {/* Date Picker */}
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-9 w-[180px] justify-start"
+      <div className="flex w-full flex-col items-center justify-between gap-4 sm:flex-row">
+        {/* Search Input */}
+        <div className="w-full sm:w-64">
+          <InputGroup>
+            <InputGroupInput
+              placeholder="Search username or ID..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="h-9"
+            />
+            <InputGroupAddon align="inline-end">
+              <SearchIcon />
+            </InputGroupAddon>
+          </InputGroup>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Status Select */}
+          <Select
+            value={selectedStatus || "all"}
+            onValueChange={handleStatusChange}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {selectedDate ? (
-              format(selectedDate, "MMM dd, yyyy")
-            ) : (
-              <span>Pick a date</span>
-            )}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={selectedDate}
-            onSelect={handleDateChange}
-            initialFocus
-          />
-        </PopoverContent>
-      </Popover>
+            <SelectTrigger className="h-9 w-[120px]">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              {STATUS_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-      {/* Clear Filters */}
-      {hasActiveFilters && (
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-9"
-          onClick={handleClearFilters}
-        >
-          <XIcon className="mr-1 h-4 w-4" />
-          Clear
-        </Button>
-      )}
+          {/* Category Select */}
+          <Select
+            value={selectedCategory || "all"}
+            onValueChange={handleCategoryChange}
+          >
+            <SelectTrigger className="h-9 w-[140px]">
+              <SelectValue placeholder="Category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Categories</SelectItem>
+              {CATEGORY_OPTIONS.map((category) => (
+                <SelectItem
+                  key={category}
+                  value={category}
+                  className="capitalize"
+                >
+                  {category}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Date Picker */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 w-[180px] justify-start"
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {selectedDate ? (
+                  format(selectedDate, "MMM dd, yyyy")
+                ) : (
+                  <span>Pick a date</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={handleDateChange}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+
+          {/* Clear Filters */}
+          {hasActiveFilters && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-9"
+              onClick={handleClearFilters}
+            >
+              <XIcon className="mr-1 h-4 w-4" />
+              Clear
+            </Button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
