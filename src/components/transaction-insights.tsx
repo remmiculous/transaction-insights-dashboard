@@ -1,7 +1,7 @@
 "use client";
 
+import { Activity, DollarSign, Percent, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
-import { TrendingUp, DollarSign, Activity, Percent } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Transaction } from "@/types/transaction";
