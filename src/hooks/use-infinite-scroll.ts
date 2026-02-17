@@ -26,8 +26,6 @@ export function useInfiniteScroll({
       const scrollPercentage =
         ((scrollTop + windowHeight) / documentHeight) * 100;
 
-      console.log("percentage--->", scrollPercentage);
-
       if (scrollPercentage >= threshold) {
         loadingRef.current = true;
         onLoadMore();

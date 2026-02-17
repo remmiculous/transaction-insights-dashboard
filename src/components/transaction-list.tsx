@@ -77,15 +77,15 @@ export function TransactionList({
               <TableCell className="text-center">{item.category}</TableCell>
               <TableCell className="text-center">
                 {item.status === true ? (
-                  <p className="flex items-center justify-center rounded-lg bg-green-600 p-1 font-medium text-sm text-white">
+                  <p className="flex items-center justify-center rounded-md border border-emerald-200 bg-emerald-100 px-2 py-1 font-medium text-emerald-700 text-xs dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-400">
                     Success
                   </p>
                 ) : item.status === false ? (
-                  <p className="flex items-center justify-center rounded-lg bg-red-600 p-1 font-medium text-sm text-white">
+                  <p className="flex items-center justify-center rounded-md border border-rose-200 bg-rose-100 px-2 py-1 font-medium text-rose-700 text-xs dark:border-rose-500/30 dark:bg-rose-500/15 dark:text-rose-400">
                     Failed
                   </p>
                 ) : (
-                  <p className="flex items-center justify-center rounded-lg bg-yellow-600 p-1 font-medium text-sm text-white">
+                  <p className="flex items-center justify-center rounded-md border border-amber-200 bg-amber-100 px-2 py-1 font-medium text-amber-700 text-xs dark:border-amber-400/30 dark:bg-amber-400/15 dark:text-amber-300">
                     Pending
                   </p>
                 )}

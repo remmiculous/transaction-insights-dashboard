@@ -3,11 +3,11 @@ import Navbar from "@/components/navbar";
 
 export default function Home() {
   return (
-    <div>
+    <main>
       <Navbar />
       <div className="mx-auto max-w-6xl">
         <DashboardPage />
       </div>
-    </div>
+    </main>
   );
 }
