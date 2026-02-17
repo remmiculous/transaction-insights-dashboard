@@ -9,8 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Transaction } from "@/types/transaction";
 import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
+import type { Transaction } from "@/types/transaction";
 
 interface TransactionListProps {
   list: Transaction[];
