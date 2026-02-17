@@ -1,24 +1,13 @@
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
-import DashboardClient from "@/components/dashboard-client";
-import { queryKeys } from "@/lib/query-keys";
-import { fetchTransactions } from "@/services/transactions.api";
+import DashboardPage from "@/components/dashboard";
+import Navbar from "@/components/navbar";
 
-export default async function DashboardPage() {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: queryKeys.transactions.infinite({}),
-    queryFn: ({ pageParam = 1 }) => fetchTransactions({ pageParam }),
-    initialPageParam: 1,
-  });
-
+export default function Home() {
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <DashboardClient />
-    </HydrationBoundary>
+    <div>
+      <Navbar />
+      <div className="mx-auto max-w-6xl">
+        <DashboardPage />
+      </div>
+    </div>
   );
 }
