@@ -3,7 +3,6 @@
 import { format } from "date-fns";
 import { CalendarIcon, FilterIcon, XIcon } from "lucide-react";
 import { useState } from "react";
-import type { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -31,15 +30,7 @@ const STATUS_OPTIONS = [
   { value: "pending", label: "Pending" },
 ];
 
-const CATEGORY_OPTIONS = [
-  "Shopping",
-  "Food",
-  "Transport",
-  "Entertainment",
-  "Bills",
-  "Healthcare",
-  "Other",
-];
+const CATEGORY_OPTIONS = ["payment", "deposit", "withdraw", "invoice"];
 
 export function TransactionFiltersComponent({
   onFiltersChange,
@@ -51,14 +42,9 @@ export function TransactionFiltersComponent({
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
     currentFilters.category,
   );
-  const [dateRange, setDateRange] = useState<DateRange | undefined>(() => {
-    if (currentFilters.dateFrom || currentFilters.dateTo) {
-      return {
-        from: currentFilters.dateFrom
-          ? new Date(currentFilters.dateFrom)
-          : undefined,
-        to: currentFilters.dateTo ? new Date(currentFilters.dateTo) : undefined,
-      };
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(() => {
+    if (currentFilters.createdAt) {
+      return new Date(currentFilters.createdAt);
     }
     return undefined;
   });
@@ -81,23 +67,22 @@ export function TransactionFiltersComponent({
     });
   };
 
-  const handleDateRangeChange = (range: DateRange | undefined) => {
-    setDateRange(range);
+  const handleDateChange = (date: Date | undefined) => {
+    setSelectedDate(date);
     onFiltersChange({
       ...currentFilters,
-      dateFrom: range?.from ? format(range.from, "yyyy-MM-dd") : undefined,
-      dateTo: range?.to ? format(range.to, "yyyy-MM-dd") : undefined,
+      createdAt: date ? date.toISOString() : undefined,
     });
   };
 
   const handleClearFilters = () => {
     setSelectedStatus(undefined);
     setSelectedCategory(undefined);
-    setDateRange(undefined);
+    setSelectedDate(undefined);
     onFiltersChange({});
   };
 
-  const hasActiveFilters = selectedStatus || selectedCategory || dateRange;
+  const hasActiveFilters = selectedStatus || selectedCategory || selectedDate;
 
   return (
     <div className="flex flex-wrap items-center gap-3">
@@ -135,42 +120,34 @@ export function TransactionFiltersComponent({
         <SelectContent>
           <SelectItem value="all">All Categories</SelectItem>
           {CATEGORY_OPTIONS.map((category) => (
-            <SelectItem key={category} value={category}>
+            <SelectItem key={category} value={category} className="capitalize">
               {category}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
 
-      {/* Date Range Picker */}
+      {/* Date Picker */}
       <Popover>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             size="sm"
-            className="h-9 w-[240px] justify-start"
+            className="h-9 w-[180px] justify-start"
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {dateRange?.from ? (
-              dateRange.to ? (
-                <>
-                  {format(dateRange.from, "MMM dd, yyyy")} -{" "}
-                  {format(dateRange.to, "MMM dd, yyyy")}
-                </>
-              ) : (
-                format(dateRange.from, "MMM dd, yyyy")
-              )
+            {selectedDate ? (
+              format(selectedDate, "MMM dd, yyyy")
             ) : (
-              <span>Pick a date range</span>
+              <span>Pick a date</span>
             )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
-            mode="range"
-            selected={dateRange}
-            onSelect={handleDateRangeChange}
-            numberOfMonths={2}
+            mode="single"
+            selected={selectedDate}
+            onSelect={handleDateChange}
             initialFocus
           />
         </PopoverContent>

@@ -125,13 +125,15 @@ export function TransactionList({
             ))
           : null}
       </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={6} className="text-center">
-            No More Results
-          </TableCell>
-        </TableRow>
-      </TableFooter>
+      {!hasNextPage && (
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={6} className="text-center">
+              No More Results
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+      )}
     </Table>
   );
 }

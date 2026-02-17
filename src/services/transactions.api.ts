@@ -7,8 +7,7 @@ interface FetchParams {
   search?: string;
   category?: string;
   status?: string[];
-  dateFrom?: string;
-  dateTo?: string;
+  createdAt?: string;
 }
 
 export const fetchTransactions = async ({
@@ -17,8 +16,7 @@ export const fetchTransactions = async ({
   search,
   category,
   status,
-  dateFrom,
-  dateTo,
+  createdAt,
 }: FetchParams): Promise<Transaction[]> => {
   const params = new URLSearchParams();
 
@@ -32,8 +30,7 @@ export const fetchTransactions = async ({
       params.append("status", s);
     }
   }
-  if (dateFrom) params.append("dateFrom", dateFrom);
-  if (dateTo) params.append("dateTo", dateTo);
+  if (createdAt) params.append("createdAt", createdAt);
 
   const res = await apiClient.get("/transactions", { params });
 

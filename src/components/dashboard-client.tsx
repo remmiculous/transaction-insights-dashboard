@@ -15,15 +15,8 @@ export default function DashboardClient() {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-    error,
+    // error,
   } = useTransactionsInfinite(filters);
-
-  if (error)
-    return (
-      <div className="mx-auto h-max w-max px-4 py-10">
-        <p>Error: {error.message}</p>
-      </div>
-    );
 
   const transactions = data?.pages.flat() ?? [];
 
