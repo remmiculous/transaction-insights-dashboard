@@ -2,6 +2,8 @@
 
 A financial transaction dashboard built with Next.js, TypeScript, and React Query. This project demonstrates advanced frontend patterns including infinite scrolling, real-time data aggregation, and sophisticated filtering capabilities.
 
+<img width="899" height="594" alt="image" src="https://github.com/user-attachments/assets/33dd18d8-7773-4ef1-aaff-cea3d46fdc8c" />
+
 ---
 
 ## 📋 Project Overview
