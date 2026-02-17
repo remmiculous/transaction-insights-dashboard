@@ -1,9 +1,9 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
 import { fetchTransactions } from "@/services/transactions.api";
-import type { Transaction } from "@/types/transaction";
+import type { TransactionFilters } from "@/types/transaction-filters";
 
-export const useTransactionsInfinite = (filters: Transaction) => {
+export const useTransactionsInfinite = (filters: TransactionFilters) => {
   return useInfiniteQuery({
     queryKey: queryKeys.transactions.infinite(filters),
 
