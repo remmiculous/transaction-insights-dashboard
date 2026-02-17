@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { TransactionFiltersComponent } from "@/components/transaction-filters";
+import { TransactionInsights } from "@/components/transaction-insights";
 import { TransactionList } from "@/components/transaction-list";
 import { useTransactionsInfinite } from "@/hooks/useTransactionsInfinite";
 import type { TransactionFilters } from "@/types/transaction-filters";
@@ -22,6 +23,11 @@ export default function DashboardClient() {
 
   return (
     <div className="space-y-6 px-4 py-10">
+      <TransactionInsights
+        transactions={transactions}
+        isLoading={isLoading || isFetchingNextPage}
+      />
+
       <TransactionFiltersComponent
         currentFilters={filters}
         onFiltersChange={setFilters}
